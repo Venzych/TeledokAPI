@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  backend:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Database=postgresdb;Username=admin;Password=cat
+    ports:
+      - "8080"
+      - "8081"
+    depends_on:
+      - db
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+  db:
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: cat
+      POSTGRES_DB: postgresdb
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
